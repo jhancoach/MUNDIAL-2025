@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MUNDIAL 2025 - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #1E1E1E;
+        color: #F3F4F6;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1E1E1E; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #374151; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #A855F7; 
+      }
+
+      /* PRINT / PDF STYLES */
+      @media print {
+        @page {
+          size: landscape;
+          margin: 0.5cm;
+        }
+        
+        body {
+          background-color: white !important;
+          color: black !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+
+        /* Hide UI elements */
+        nav, .no-print, button:not(.print-show), ::-webkit-scrollbar {
+          display: none !important;
+        }
+
+        /* Reset Layout containers */
+        #root, main {
+          width: 100% !important;
+          max-width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: visible !important;
+        }
+
+        /* Turn dark cards into white report sections */
+        .bg-\[\#1E1E1E\], .bg-\[\#2D2D2D\], .bg-\[\#262626\], .bg-gray-800, .bg-gray-900 {
+          background-color: #ffffff !important;
+          border: 1px solid #e5e7eb !important; /* light gray border */
+          box-shadow: none !important;
+          color: black !important;
+        }
+
+        /* Adjust Text Colors for Ink Saving */
+        .text-white, .text-gray-100, .text-gray-200, .text-gray-300 {
+          color: #000000 !important;
+        }
+        .text-gray-400, .text-gray-500 {
+          color: #4b5563 !important; /* darker gray */
+        }
+        
+        /* Adjust Highlights */
+        .text-purple-400, .text-purple-500 { color: #7e22ce !important; }
+        .bg-purple-600 { background-color: #7e22ce !important; color: white !important; }
+
+        /* Chart/Table Adjustments */
+        table {
+          font-size: 10px !important;
+          width: 100% !important;
+        }
+        th, td {
+          border-bottom: 1px solid #ddd !important;
+          padding: 4px !important;
+        }
+        
+        /* Force Breaks */
+        .page-break {
+          page-break-before: always;
+        }
+        
+        /* Add Report Header */
+        body::before {
+          content: "MUNDIAL 2025 - Relatório Competitivo";
+          display: block;
+          text-align: center;
+          font-size: 24px;
+          font-weight: bold;
+          margin-bottom: 20px;
+          border-bottom: 2px solid #000;
+          padding-bottom: 10px;
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.10.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.1/",
+    "recharts": "https://esm.sh/recharts@^3.5.1",
+    "lucide-react": "https://esm.sh/lucide-react@^0.559.0",
+    "react/": "https://esm.sh/react@^19.2.1/",
+    "react": "https://esm.sh/react@^19.2.1"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
