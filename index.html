@@ -6,26 +6,63 @@
     <title>MUNDIAL 2025 - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap');
+      
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #1E1E1E;
+        background-color: #050505;
+        background-image: 
+          radial-gradient(circle at 50% 0%, #1a103c 0%, transparent 40%),
+          radial-gradient(circle at 80% 10%, #2e1065 0%, transparent 20%);
+        background-attachment: fixed;
         color: #F3F4F6;
+        overflow-x: hidden;
       }
+
+      h1, h2, h3, h4, h5, h6, .font-display {
+        font-family: 'Rajdhani', sans-serif;
+      }
+
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #1E1E1E; 
+        background: #09090b; 
       }
       ::-webkit-scrollbar-thumb {
-        background: #374151; 
+        background: #4c1d95; 
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #A855F7; 
+        background: #7c3aed; 
+      }
+
+      /* Utility for Glassmorphism */
+      .glass {
+        background: rgba(20, 20, 23, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Animations */
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+      .animate-float {
+        animation: float 4s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+        50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); }
+      }
+      .animate-pulse-glow {
+        animation: pulse-glow 3s infinite;
       }
 
       /* PRINT / PDF STYLES */
@@ -36,7 +73,7 @@
         }
         
         body {
-          background-color: white !important;
+          background: white !important;
           color: black !important;
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
@@ -57,11 +94,12 @@
         }
 
         /* Turn dark cards into white report sections */
-        .bg-\[\#1E1E1E\], .bg-\[\#2D2D2D\], .bg-\[\#262626\], .bg-gray-800, .bg-gray-900 {
+        .glass, .bg-\[\#1E1E1E\], .bg-\[\#2D2D2D\], .bg-\[\#262626\], .bg-gray-800, .bg-gray-900 {
           background-color: #ffffff !important;
-          border: 1px solid #e5e7eb !important; /* light gray border */
+          border: 1px solid #e5e7eb !important; 
           box-shadow: none !important;
           color: black !important;
+          backdrop-filter: none !important;
         }
 
         /* Adjust Text Colors for Ink Saving */
@@ -69,14 +107,12 @@
           color: #000000 !important;
         }
         .text-gray-400, .text-gray-500 {
-          color: #4b5563 !important; /* darker gray */
+          color: #4b5563 !important; 
         }
         
-        /* Adjust Highlights */
         .text-purple-400, .text-purple-500 { color: #7e22ce !important; }
         .bg-purple-600 { background-color: #7e22ce !important; color: white !important; }
 
-        /* Chart/Table Adjustments */
         table {
           font-size: 10px !important;
           width: 100% !important;
@@ -86,12 +122,10 @@
           padding: 4px !important;
         }
         
-        /* Force Breaks */
         .page-break {
           page-break-before: always;
         }
         
-        /* Add Report Header */
         body::before {
           content: "MUNDIAL 2025 - Relatório Competitivo";
           display: block;
