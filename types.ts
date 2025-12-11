@@ -1,3 +1,4 @@
+
 export interface PlayerData {
   PLAYER: string; 
   TIME: string;   
@@ -64,6 +65,13 @@ export interface SafeData {
 export interface GenericDimData {
   Name: string; 
   IMG: string;
+}
+
+// Configuration Interface
+export interface AppConfig {
+  titlePart1: string;
+  titlePart2: string;
+  subtitle: string;
 }
 
 // Global State Interface

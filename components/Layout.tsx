@@ -1,16 +1,19 @@
+
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Shield, Skull, RefreshCw, Menu, X, Printer, Download, Trophy } from 'lucide-react';
+import { LayoutDashboard, Users, Shield, Skull, RefreshCw, Menu, X, Printer, Download, Trophy, Settings } from 'lucide-react';
 import { CSV_URLS } from '../constants';
+import { AppConfig } from '../types';
 
 interface LayoutProps {
   children: React.ReactNode;
   onRefresh: () => void;
   loading: boolean;
   lastUpdated: Date | null;
+  config: AppConfig;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, onRefresh, loading, lastUpdated }) => {
+const Layout: React.FC<LayoutProps> = ({ children, onRefresh, loading, lastUpdated, config }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   const navItems = [
@@ -50,12 +53,12 @@ const Layout: React.FC<LayoutProps> = ({ children, onRefresh, loading, lastUpdat
                  </div>
               </div>
               <div className="flex flex-col">
-                <h1 className="text-2xl font-black italic tracking-widest font-display leading-none text-white drop-shadow-md">
-                  MUNDIAL <span className="text-yellow-500">2025</span>
+                <h1 className="text-2xl font-black italic tracking-widest font-display leading-none text-white drop-shadow-md uppercase">
+                  {config.titlePart1} <span className="text-yellow-500">{config.titlePart2}</span>
                 </h1>
                 <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <p className="text-[10px] text-gray-400 font-bold tracking-[0.2em] uppercase">Global Finals</p>
+                    <p className="text-[10px] text-gray-400 font-bold tracking-[0.2em] uppercase">{config.subtitle}</p>
                 </div>
               </div>
             </div>
@@ -107,6 +110,14 @@ const Layout: React.FC<LayoutProps> = ({ children, onRefresh, loading, lastUpdat
                   >
                     <Download size={18} />
                   </button>
+                  <div className="w-px h-4 bg-white/10 mx-1"></div>
+                  <NavLink
+                    to="/admin"
+                    title="Configurações (Admin)"
+                    className={({ isActive }) => `p-2.5 rounded-lg transition-colors ${isActive ? 'text-yellow-500 bg-white/5' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                  >
+                    <Settings size={18} />
+                  </NavLink>
               </div>
 
               <button
@@ -164,6 +175,13 @@ const Layout: React.FC<LayoutProps> = ({ children, onRefresh, loading, lastUpdat
                   >
                       <Download size={18}/> Dados
                   </button>
+                  <NavLink
+                    to="/admin"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex-1 flex justify-center items-center gap-2 py-3 bg-gray-800 rounded-lg text-sm font-bold text-gray-300 hover:bg-gray-700"
+                  >
+                      <Settings size={18}/> Admin
+                  </NavLink>
               </div>
             </div>
           </div>
@@ -178,7 +196,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onRefresh, loading, lastUpdat
       {/* Footer */}
       <footer className="border-t border-white/5 py-6 mt-8 bg-black/20 no-print">
         <div className="max-w-7xl mx-auto px-4 text-center text-gray-500 text-xs font-mono flex flex-col items-center gap-2">
-            <span>&copy; 2025 MUNDIAL FREE FIRE DASHBOARD.</span>
+            <span>&copy; 2025 {config.titlePart1} {config.titlePart2} DASHBOARD.</span>
             <div className="flex gap-2 text-[10px] text-gray-600 uppercase">
                 <span>Dúvida Zero</span>
                 <span>•</span>

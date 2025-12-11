@@ -1,3 +1,4 @@
+
 export const CSV_URLS = {
   fDetalhes: "https://docs.google.com/spreadsheets/d/1aG4Gl14KUL93l_ovqhA_4Dx4P-BBG-eewcy1OAJ_L4M/export?format=csv&gid=1560720549",
   fPersonagens: "https://docs.google.com/spreadsheets/d/1aG4Gl14KUL93l_ovqhA_4Dx4P-BBG-eewcy1OAJ_L4M/export?format=csv&gid=1045005047",
@@ -13,6 +14,12 @@ export const CSV_URLS = {
   dHab4: "https://docs.google.com/spreadsheets/d/1aG4Gl14KUL93l_ovqhA_4Dx4P-BBG-eewcy1OAJ_L4M/export?format=csv&gid=1414607890",
   dPets: "https://docs.google.com/spreadsheets/d/1aG4Gl14KUL93l_ovqhA_4Dx4P-BBG-eewcy1OAJ_L4M/export?format=csv&gid=1145644018",
   dItem: "https://docs.google.com/spreadsheets/d/1aG4Gl14KUL93l_ovqhA_4Dx4P-BBG-eewcy1OAJ_L4M/export?format=csv&gid=1365432121"
+};
+
+export const DEFAULT_CONFIG = {
+  titlePart1: "MUNDIAL",
+  titlePart2: "2025",
+  subtitle: "Global Finals"
 };
 
 export const THEME_COLORS = {

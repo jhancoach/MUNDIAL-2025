@@ -1,7 +1,18 @@
+
 import React from 'react';
 import { Trophy, Flame } from 'lucide-react';
+import { AppConfig } from '../types';
 
-const SplashScreen: React.FC = () => {
+interface SplashScreenProps {
+  config?: AppConfig;
+}
+
+const SplashScreen: React.FC<SplashScreenProps> = ({ config }) => {
+  // Fallback if config is not yet loaded (though App handles this)
+  const title1 = config?.titlePart1 || "MUNDIAL";
+  const title2 = config?.titlePart2 || "2025";
+  const sub = config?.subtitle || "Dashboard Competitivo";
+
   return (
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] overflow-hidden">
       {/* Background Effects */}
@@ -21,13 +32,13 @@ const SplashScreen: React.FC = () => {
         </div>
 
         {/* Text */}
-        <h1 className="text-5xl md:text-7xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-gray-400 tracking-wider font-display mb-2 drop-shadow-lg">
-          MUNDIAL 2025
+        <h1 className="text-5xl md:text-7xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-gray-400 tracking-wider font-display mb-2 drop-shadow-lg uppercase">
+          {title1} {title2}
         </h1>
         <div className="flex items-center gap-3">
             <div className="h-[2px] w-12 bg-yellow-600"></div>
             <p className="text-yellow-500 tracking-[0.3em] text-sm md:text-base font-bold uppercase">
-            Dashboard Competitivo
+            {sub}
             </p>
             <div className="h-[2px] w-12 bg-yellow-600"></div>
         </div>

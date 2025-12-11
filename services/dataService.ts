@@ -1,6 +1,33 @@
-import { CSV_URLS } from '../constants';
+
+import { CSV_URLS, DEFAULT_CONFIG } from '../constants';
 import { parseCSV } from '../utils/csvParser';
-import { DashboardData, PlayerData, KillFeed, MatchDetails, CharacterData, TeamStats, TeamReference, WeaponData, SafeData, GenericDimData } from '../types';
+import { DashboardData, PlayerData, KillFeed, MatchDetails, CharacterData, TeamStats, TeamReference, WeaponData, SafeData, GenericDimData, AppConfig } from '../types';
+
+// Helper to get active URLs (Local Storage > Constants)
+export const getActiveUrls = () => {
+  try {
+    const saved = localStorage.getItem('MUNDIAL_DASHBOARD_URLS');
+    if (saved) {
+      return { ...CSV_URLS, ...JSON.parse(saved) };
+    }
+  } catch (e) {
+    console.error("Error reading custom URLs", e);
+  }
+  return CSV_URLS;
+};
+
+// Helper to get App Config (Title/Subtitle)
+export const getAppConfig = (): AppConfig => {
+  try {
+    const saved = localStorage.getItem('MUNDIAL_DASHBOARD_CONFIG');
+    if (saved) {
+      return { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+    }
+  } catch (e) {
+    console.error("Error reading app config", e);
+  }
+  return DEFAULT_CONFIG;
+};
 
 // Helper to normalize dimension tables that might have different column names for the "Name" (e.g., Hab1 vs Pet)
 const normalizeDim = (data: any[], keyName: string): GenericDimData[] => {
@@ -42,21 +69,23 @@ const normalizeDim = (data: any[], keyName: string): GenericDimData[] => {
 
 export const fetchDashboardData = async (): Promise<DashboardData> => {
   try {
+    const activeUrls = getActiveUrls();
+
     const urls = [
-      CSV_URLS.fPlayersDados,
-      CSV_URLS.fKillFeed,
-      CSV_URLS.fDetalhes,
-      CSV_URLS.fPersonagens,
-      CSV_URLS.dTime,
-      CSV_URLS.dArma,
-      CSV_URLS.dSafe,
+      activeUrls.fPlayersDados,
+      activeUrls.fKillFeed,
+      activeUrls.fDetalhes,
+      activeUrls.fPersonagens,
+      activeUrls.dTime,
+      activeUrls.dArma,
+      activeUrls.dSafe,
       // New Dimensions
-      CSV_URLS.dHab1,
-      CSV_URLS.dHab2,
-      CSV_URLS.dHab3,
-      CSV_URLS.dHab4,
-      CSV_URLS.dPets,
-      CSV_URLS.dItem
+      activeUrls.dHab1,
+      activeUrls.dHab2,
+      activeUrls.dHab3,
+      activeUrls.dHab4,
+      activeUrls.dPets,
+      activeUrls.dItem
     ];
 
     const responses = await Promise.all(urls.map(url => fetch(url).then(r => r.text())));
