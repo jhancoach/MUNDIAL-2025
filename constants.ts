@@ -18,7 +18,7 @@ export const CSV_URLS = {
 export const THEME_COLORS = {
   background: "#1E1E1E",
   card: "#2D2D2D",
-  primary: "#A855F7",
-  secondary: "#6B7280",
+  primary: "#EAB308", // Yellow-500
+  secondary: "#F97316", // Orange-500
   text: "#F3F4F6"
 };

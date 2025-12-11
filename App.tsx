@@ -17,7 +17,6 @@ const App: React.FC = () => {
     characters: [],
     teamsReference: [],
     weapons: [],
-    weaponTypes: [],
     safes: [],
     hab1: [],
     hab2: [],
@@ -37,12 +36,13 @@ const App: React.FC = () => {
     // Fetch data
     const newData = await fetchDashboardData();
     
-    // Ensure splash screen shows for at least a few seconds for effect
-    // In a real app, you might only wait for data, but for "Premium feel", a slight pause helps set the mood
+    // Update data immediately
+    setData(newData);
+    
+    // Hide splash screen with a small buffer for smooth transition
     setTimeout(() => {
-        setData(newData);
         setShowSplash(false);
-    }, 2500);
+    }, 800); 
   }, []);
 
   useEffect(() => {

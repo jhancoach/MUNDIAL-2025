@@ -6,14 +6,15 @@
     <title>MUNDIAL 2025 - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700;800&display=swap');
       
       body {
         font-family: 'Inter', sans-serif;
         background-color: #050505;
+        /* Updated gradients to Gold/Dark Orange/Black */
         background-image: 
-          radial-gradient(circle at 50% 0%, #1a103c 0%, transparent 40%),
-          radial-gradient(circle at 80% 10%, #2e1065 0%, transparent 20%);
+          radial-gradient(circle at 50% 0%, #422006 0%, transparent 45%),
+          radial-gradient(circle at 85% 10%, #854d0e 0%, transparent 25%);
         background-attachment: fixed;
         color: #F3F4F6;
         overflow-x: hidden;
@@ -23,7 +24,7 @@
         font-family: 'Rajdhani', sans-serif;
       }
 
-      /* Custom Scrollbar */
+      /* Custom Scrollbar - Gold Theme */
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -32,19 +33,19 @@
         background: #09090b; 
       }
       ::-webkit-scrollbar-thumb {
-        background: #4c1d95; 
+        background: #ca8a04; /* Yellow-600 */
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #7c3aed; 
+        background: #eab308; /* Yellow-500 */
       }
 
       /* Utility for Glassmorphism */
       .glass {
-        background: rgba(20, 20, 23, 0.7);
+        background: rgba(10, 10, 10, 0.8);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(234, 179, 8, 0.15); /* Yellow border hint */
       }
 
       /* Animations */
@@ -58,8 +59,8 @@
       }
 
       @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
-        50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); }
+        0%, 100% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+        50% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.5); }
       }
       .animate-pulse-glow {
         animation: pulse-glow 3s infinite;
@@ -110,8 +111,8 @@
           color: #4b5563 !important; 
         }
         
-        .text-purple-400, .text-purple-500 { color: #7e22ce !important; }
-        .bg-purple-600 { background-color: #7e22ce !important; color: white !important; }
+        .text-purple-400, .text-purple-500, .text-yellow-400, .text-yellow-500 { color: #000 !important; font-weight: bold; }
+        .bg-purple-600, .bg-yellow-500 { background-color: #000 !important; color: white !important; }
 
         table {
           font-size: 10px !important;
@@ -153,5 +154,6 @@
 </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

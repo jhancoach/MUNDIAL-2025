@@ -54,10 +54,10 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters, options }) =
     filters.confrontation !== 'All';
 
   return (
-    <div className="bg-[#2D2D2D] rounded-xl p-4 mb-6 border border-gray-700 shadow-md relative z-40">
+    <div className="bg-[#1a1a1a] rounded-xl p-4 mb-6 border border-gray-800 shadow-md relative z-40">
       <div className="flex justify-between items-center md:hidden mb-4" onClick={() => setIsOpen(!isOpen)}>
-        <span className="text-white font-bold flex items-center gap-2"><Filter size={18}/> Filtros</span>
-        <span className="text-purple-400 text-sm">{isOpen ? 'Fechar' : 'Abrir'}</span>
+        <span className="text-white font-bold flex items-center gap-2 uppercase tracking-wide"><Filter size={18}/> Filtros</span>
+        <span className="text-yellow-500 text-sm font-bold">{isOpen ? 'FECHAR' : 'ABRIR'}</span>
       </div>
 
       <div className={`${isOpen ? 'block' : 'hidden'} md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`}>
@@ -86,7 +86,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, setFilters, options }) =
 
       {hasActiveFilters && (
         <div className="mt-4 flex justify-end">
-          <button onClick={clearFilters} className="text-red-400 text-sm flex items-center gap-1 hover:text-red-300">
+          <button onClick={clearFilters} className="text-red-500 text-sm flex items-center gap-1 hover:text-red-400 font-bold uppercase tracking-wider">
             <X size={14} /> Limpar Filtros
           </button>
         </div>
@@ -119,21 +119,21 @@ const SearchableSelect = ({ label, value, options, onChange }: { label: string, 
 
     return (
         <div className="flex flex-col relative" ref={wrapperRef}>
-            <label className="text-[10px] text-gray-500 uppercase mb-1 font-semibold">{label}</label>
+            <label className="text-[10px] text-gray-500 uppercase mb-1 font-bold tracking-wider">{label}</label>
             <div 
-                className="bg-[#1E1E1E] text-gray-200 text-xs rounded-lg border border-gray-700 px-3 py-2.5 flex justify-between items-center cursor-pointer hover:border-purple-500 transition-colors"
+                className="bg-black text-gray-300 text-xs rounded-lg border border-gray-700 px-3 py-2.5 flex justify-between items-center cursor-pointer hover:border-yellow-500 transition-colors"
                 onClick={() => setOpen(!open)}
             >
-                <span className="truncate">{displayValue}</span>
+                <span className="truncate font-medium">{displayValue}</span>
                 <ChevronDown size={14} className="text-gray-500" />
             </div>
 
             {open && (
-                <div className="absolute top-full left-0 w-full mt-1 bg-[#262626] border border-gray-700 rounded-lg shadow-xl z-50 max-h-60 overflow-hidden flex flex-col">
+                <div className="absolute top-full left-0 w-full mt-1 bg-[#1a1a1a] border border-gray-700 rounded-lg shadow-xl z-50 max-h-60 overflow-hidden flex flex-col">
                     <input 
                         type="text" 
                         placeholder="Buscar..." 
-                        className="p-2 bg-[#1E1E1E] text-white border-b border-gray-700 text-xs focus:outline-none placeholder-gray-600"
+                        className="p-2 bg-black text-white border-b border-gray-700 text-xs focus:outline-none placeholder-gray-600"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         autoFocus
@@ -142,7 +142,7 @@ const SearchableSelect = ({ label, value, options, onChange }: { label: string, 
                         {filteredOptions.map((opt, i) => (
                             <div 
                                 key={i} 
-                                className={`px-3 py-2 hover:bg-purple-900/30 cursor-pointer flex items-center justify-between text-xs ${value === opt ? 'text-purple-400 font-bold' : 'text-gray-300'}`}
+                                className={`px-3 py-2 hover:bg-yellow-900/20 cursor-pointer flex items-center justify-between text-xs ${value === opt ? 'text-yellow-500 font-bold' : 'text-gray-300'}`}
                                 onClick={() => {
                                     onChange(opt);
                                     setOpen(false);
@@ -189,23 +189,23 @@ const MultiSelectPlayer = ({ options, selected, onChange }: { options: string[],
 
     return (
         <div className="flex flex-col relative" ref={wrapperRef}>
-            <label className="text-[10px] text-gray-500 uppercase mb-1 font-semibold">Jogadores (Busca Multipla)</label>
+            <label className="text-[10px] text-gray-500 uppercase mb-1 font-bold tracking-wider">Jogadores</label>
             <div 
-                className="bg-[#1E1E1E] text-gray-200 text-xs rounded-lg border border-gray-700 px-3 py-2.5 flex justify-between items-center cursor-pointer hover:border-purple-500 transition-colors"
+                className="bg-black text-gray-300 text-xs rounded-lg border border-gray-700 px-3 py-2.5 flex justify-between items-center cursor-pointer hover:border-yellow-500 transition-colors"
                 onClick={() => setOpen(!open)}
             >
-                <span className="truncate">
+                <span className="truncate font-medium">
                     {selected.length === 0 ? 'Selecionar Jogadores...' : `${selected.length} selecionado(s)`}
                 </span>
                 <Search size={14} className="text-gray-500" />
             </div>
             
             {open && (
-                <div className="absolute top-full left-0 w-full mt-1 bg-[#262626] border border-gray-700 rounded-lg shadow-xl z-50 max-h-60 overflow-hidden flex flex-col">
+                <div className="absolute top-full left-0 w-full mt-1 bg-[#1a1a1a] border border-gray-700 rounded-lg shadow-xl z-50 max-h-60 overflow-hidden flex flex-col">
                     <input 
                         type="text" 
                         placeholder="Buscar..." 
-                        className="p-2 bg-[#1E1E1E] text-white border-b border-gray-700 text-xs focus:outline-none placeholder-gray-600"
+                        className="p-2 bg-black text-white border-b border-gray-700 text-xs focus:outline-none placeholder-gray-600"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         autoFocus
@@ -214,11 +214,11 @@ const MultiSelectPlayer = ({ options, selected, onChange }: { options: string[],
                         {filteredOptions.map(opt => (
                             <div 
                                 key={opt} 
-                                className="px-3 py-2 hover:bg-purple-900/30 cursor-pointer flex items-center justify-between text-xs text-gray-300"
+                                className="px-3 py-2 hover:bg-yellow-900/20 cursor-pointer flex items-center justify-between text-xs text-gray-300 hover:text-yellow-100"
                                 onClick={() => toggleOption(opt)}
                             >
                                 <span>{opt}</span>
-                                {selected.includes(opt) && <Check size={14} className="text-purple-400" />}
+                                {selected.includes(opt) && <Check size={14} className="text-yellow-500" />}
                             </div>
                         ))}
                         {filteredOptions.length === 0 && <div className="p-3 text-gray-500 text-xs text-center">Nenhum jogador encontrado</div>}
@@ -228,7 +228,7 @@ const MultiSelectPlayer = ({ options, selected, onChange }: { options: string[],
             {selected.length > 0 && (
                  <div className="flex flex-wrap gap-1 mt-2">
                     {selected.map(s => (
-                        <span key={s} className="text-[10px] bg-purple-900/40 text-purple-200 px-2 py-0.5 rounded-full flex items-center gap-1 border border-purple-900">
+                        <span key={s} className="text-[10px] bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded-full flex items-center gap-1 border border-yellow-500/30">
                             {s}
                             <X size={10} className="cursor-pointer hover:text-white" onClick={() => toggleOption(s)}/>
                         </span>

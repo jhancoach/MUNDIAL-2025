@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DashboardData } from '../types';
 import { calculateTeamStats } from '../services/dataService';
 import { Shield, TrendingUp, Crosshair, Users, Map as MapIcon, ArrowLeft, Trophy, Target } from 'lucide-react';
@@ -10,10 +10,12 @@ interface TeamsProps {
   data: DashboardData;
 }
 
-const COLORS = ['#A855F7', '#EC4899', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#6366F1', '#8B5CF6'];
+// Gold, Orange, Red, Blue theme for charts
+const COLORS = ['#EAB308', '#F97316', '#EF4444', '#3B82F6', '#A855F7', '#10B981', '#6366F1', '#EC4899'];
 
 const Teams: React.FC<TeamsProps> = ({ data }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
      team: 'All', players: [], weapon: 'All', safe: 'All', map: 'All', round: 'All', confrontation: 'All'
   });
@@ -115,7 +117,11 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
 
   const totalRosterKills = useMemo(() => roster.reduce((acc, p) => acc + p.kills, 0), [roster]);
 
-  if (data.loading) return <div className="text-center py-20 animate-pulse text-purple-400">Carregando dados das equipes...</div>;
+  const handlePlayerClick = (playerName: string) => {
+    navigate('/players', { state: { player: playerName } });
+  };
+
+  if (data.loading) return <div className="text-center py-20 animate-pulse text-yellow-500 font-bold">CARREGANDO DADOS DAS EQUIPES...</div>;
 
   return (
     <div className="space-y-6">
@@ -130,7 +136,7 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
             {selectedTeamName && (
                 <button 
                     onClick={() => setFilters(prev => ({...prev, team: 'All'}))}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm font-bold"
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-bold uppercase tracking-wide border border-gray-600"
                 >
                     <ArrowLeft size={16} /> Voltar para Galeria
                 </button>
@@ -142,25 +148,25 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
                 
                 {/* Hero Section */}
-                <div className="bg-[#2D2D2D] rounded-2xl p-8 border border-gray-700/50 shadow-2xl relative overflow-hidden">
+                <div className="bg-[#1a1a1a] rounded-2xl p-8 border border-gray-800 shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-                         <Shield size={200} />
+                         <Trophy size={200} className="text-yellow-600/20" />
                     </div>
                     <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                         <div className="w-32 h-32 md:w-40 md:h-40 bg-black/40 rounded-full border-4 border-purple-500/30 flex items-center justify-center overflow-hidden shadow-lg">
+                         <div className="w-32 h-32 md:w-40 md:h-40 bg-black rounded-full border-4 border-yellow-500/50 flex items-center justify-center overflow-hidden shadow-lg p-2">
                              {selectedTeamStats.image ? (
-                                 <img src={selectedTeamStats.image} alt={selectedTeamStats.name} className="w-full h-full object-cover" />
+                                 <img src={selectedTeamStats.image} alt={selectedTeamStats.name} className="w-full h-full object-contain" />
                              ) : (
-                                 <Shield size={64} className="text-gray-600" />
+                                 <Trophy size={64} className="text-gray-600" />
                              )}
                          </div>
                          <div className="text-center md:text-left space-y-2">
-                             <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">{selectedTeamStats.name}</h1>
+                             <h1 className="text-4xl md:text-5xl font-black italic text-white tracking-tight uppercase">{selectedTeamStats.name}</h1>
                              <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
-                                 <Badge label="Pontos Totais" value={selectedTeamStats.pts} color="bg-purple-600" />
-                                 <Badge label="Booyahs" value={selectedTeamStats.b} color="bg-yellow-600" icon={<Trophy size={14}/>} />
+                                 <Badge label="Pontos Totais" value={selectedTeamStats.pts} color="bg-yellow-500 text-black" />
+                                 <Badge label="Booyahs" value={selectedTeamStats.b} color="bg-orange-500" icon={<Trophy size={14}/>} />
                                  <Badge label="Abates" value={selectedTeamStats.abts} color="bg-red-600" icon={<Crosshair size={14}/>} />
-                                 <Badge label="Partidas" value={selectedTeamStats.s} color="bg-gray-600" />
+                                 <Badge label="Partidas" value={selectedTeamStats.s} color="bg-gray-800" />
                              </div>
                          </div>
                     </div>
@@ -173,26 +179,26 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
                     <div className="lg:col-span-2 space-y-6">
                         
                         {/* Points Evolution */}
-                        <div className="bg-[#2D2D2D] p-6 rounded-2xl border border-gray-700/50 shadow-lg">
-                            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
-                                <TrendingUp size={18} className="text-purple-400"/> 
+                        <div className="bg-[#1a1a1a] p-6 rounded-2xl border border-gray-800 shadow-lg">
+                            <h3 className="text-white font-bold mb-4 flex items-center gap-2 uppercase">
+                                <TrendingUp size={18} className="text-yellow-500"/> 
                                 Evolução de Pontos e Abates por Rodada
                             </h3>
                             <div className="h-72">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart data={evolutionData} margin={{top: 20, right: 10, left: -20, bottom: 0}}>
-                                        <XAxis dataKey="rd" stroke="#6B7280" fontSize={10} tickLine={false} axisLine={false} />
+                                        <XAxis dataKey="rd" stroke="#525252" fontSize={10} tickLine={false} axisLine={false} />
                                         <Tooltip 
-                                            contentStyle={{ backgroundColor: '#1E1E1E', border: '1px solid #374151', borderRadius: '8px' }}
+                                            contentStyle={{ backgroundColor: '#171717', border: '1px solid #404040', borderRadius: '8px' }}
                                             itemStyle={{ color: '#E5E7EB' }}
-                                            cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                                            cursor={{fill: 'rgba(234, 179, 8, 0.1)'}}
                                         />
                                         <Legend />
-                                        <Bar dataKey="pts" fill="#A855F7" radius={[4, 4, 0, 0]} name="Pontos">
-                                            <LabelList dataKey="pts" position="top" fill="#F3F4F6" fontSize={10} fontWeight="bold" />
+                                        <Bar dataKey="pts" fill="#EAB308" radius={[2, 2, 0, 0]} name="Pontos">
+                                            <LabelList dataKey="pts" position="top" fill="#D4D4D4" fontSize={10} fontWeight="bold" />
                                         </Bar>
-                                        <Bar dataKey="kills" fill="#F87171" radius={[4, 4, 0, 0]} name="Abates">
-                                             <LabelList dataKey="kills" position="top" fill="#F3F4F6" fontSize={10} fontWeight="bold" />
+                                        <Bar dataKey="kills" fill="#EF4444" radius={[2, 2, 0, 0]} name="Abates">
+                                             <LabelList dataKey="kills" position="top" fill="#D4D4D4" fontSize={10} fontWeight="bold" />
                                         </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
@@ -200,13 +206,13 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
                         </div>
 
                          {/* Map Stats Table */}
-                        <div className="bg-[#2D2D2D] rounded-2xl border border-gray-700/50 overflow-hidden">
-                             <div className="p-4 bg-[#262626] border-b border-gray-700">
-                                 <h3 className="text-white font-bold flex items-center gap-2"><MapIcon size={18} className="text-green-400"/> Desempenho por Mapa</h3>
+                        <div className="bg-[#1a1a1a] rounded-2xl border border-gray-800 overflow-hidden">
+                             <div className="p-4 bg-black border-b border-gray-800">
+                                 <h3 className="text-white font-bold flex items-center gap-2 uppercase tracking-wide"><MapIcon size={18} className="text-green-500"/> Desempenho por Mapa</h3>
                              </div>
                              <div className="overflow-x-auto">
                                  <table className="w-full text-sm text-left">
-                                     <thead className="text-xs text-gray-400 uppercase bg-[#1E1E1E]">
+                                     <thead className="text-xs text-gray-500 uppercase bg-black/50">
                                          <tr>
                                              <th className="px-4 py-3">Mapa</th>
                                              <th className="px-4 py-3 text-center">Jogos</th>
@@ -216,15 +222,15 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
                                              <th className="px-4 py-3 text-center">Média</th>
                                          </tr>
                                      </thead>
-                                     <tbody className="divide-y divide-gray-700">
+                                     <tbody className="divide-y divide-gray-800">
                                          {mapStats.map((m, i) => (
-                                             <tr key={i} className="hover:bg-white/5">
-                                                 <td className="px-4 py-3 font-bold text-white">{m.map}</td>
+                                             <tr key={i} className="hover:bg-yellow-900/10 transition-colors">
+                                                 <td className="px-4 py-3 font-bold text-white uppercase">{m.map}</td>
                                                  <td className="px-4 py-3 text-center text-gray-400">{m.matches}</td>
-                                                 <td className="px-4 py-3 text-center text-yellow-500 font-bold">{m.booyahs}</td>
-                                                 <td className="px-4 py-3 text-center text-red-400">{m.kills}</td>
-                                                 <td className="px-4 py-3 text-center text-purple-400 font-bold">{m.pts}</td>
-                                                 <td className="px-4 py-3 text-center text-gray-300">{(m.pts / m.matches).toFixed(1)}</td>
+                                                 <td className="px-4 py-3 text-center text-yellow-500 font-black">{m.booyahs}</td>
+                                                 <td className="px-4 py-3 text-center text-red-500 font-bold">{m.kills}</td>
+                                                 <td className="px-4 py-3 text-center text-white font-bold">{m.pts}</td>
+                                                 <td className="px-4 py-3 text-center text-gray-300 font-mono">{(m.pts / m.matches).toFixed(1)}</td>
                                              </tr>
                                          ))}
                                      </tbody>
@@ -238,9 +244,9 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
                     <div className="space-y-6">
                         
                         {/* Kill Contribution Chart */}
-                        <div className="bg-[#2D2D2D] p-6 rounded-2xl border border-gray-700/50 shadow-lg flex flex-col items-center">
-                            <h3 className="text-white font-bold mb-2 flex items-center gap-2 w-full">
-                                <Target size={18} className="text-red-400"/> 
+                        <div className="bg-[#1a1a1a] p-6 rounded-2xl border border-gray-800 shadow-lg flex flex-col items-center">
+                            <h3 className="text-white font-bold mb-2 flex items-center gap-2 w-full uppercase">
+                                <Target size={18} className="text-red-500"/> 
                                 Contribuição de Abates
                             </h3>
                             <div className="h-64 w-full">
@@ -256,10 +262,10 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
                                             dataKey="value"
                                         >
                                             {killDistribution.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#2D2D2D" strokeWidth={2} />
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#1a1a1a" strokeWidth={2} />
                                             ))}
                                         </Pie>
-                                        <Tooltip contentStyle={{ backgroundColor: '#1E1E1E', borderRadius: '8px', border: '1px solid #374151' }} itemStyle={{color: '#fff'}} />
+                                        <Tooltip contentStyle={{ backgroundColor: '#171717', borderRadius: '8px', border: '1px solid #404040' }} itemStyle={{color: '#fff'}} />
                                         <Legend verticalAlign="bottom" height={36} iconType="circle" />
                                     </PieChart>
                                 </ResponsiveContainer>
@@ -267,28 +273,32 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
                         </div>
 
                         {/* Player Roster List */}
-                        <div className="bg-[#2D2D2D] rounded-2xl border border-gray-700/50 overflow-hidden shadow-lg">
-                             <div className="p-4 bg-[#262626] border-b border-gray-700">
-                                 <h3 className="text-white font-bold flex items-center gap-2"><Users size={18} className="text-blue-400"/> Elenco (Roster)</h3>
+                        <div className="bg-[#1a1a1a] rounded-2xl border border-gray-800 overflow-hidden shadow-lg">
+                             <div className="p-4 bg-black border-b border-gray-800">
+                                 <h3 className="text-white font-bold flex items-center gap-2 uppercase tracking-wide"><Users size={18} className="text-blue-500"/> Elenco (Roster)</h3>
                              </div>
-                             <div className="divide-y divide-gray-700">
+                             <div className="divide-y divide-gray-800">
                                  {roster.map((player, idx) => {
                                      const percent = totalRosterKills > 0 ? ((player.kills / totalRosterKills) * 100).toFixed(1) : "0.0";
                                      return (
-                                     <div key={idx} className="p-3 flex items-center justify-between hover:bg-white/5 transition-colors">
+                                     <div 
+                                        key={idx} 
+                                        onClick={() => handlePlayerClick(player.name)}
+                                        className="p-3 flex items-center justify-between hover:bg-yellow-900/10 hover:border-l-2 hover:border-yellow-500 transition-all cursor-pointer group"
+                                     >
                                          <div className="flex items-center gap-3">
-                                             <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-400 border border-gray-600">
+                                             <div className="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center text-xs font-bold text-gray-500 border border-gray-800 group-hover:border-yellow-500/50">
                                                  {player.name.substring(0,2).toUpperCase()}
                                              </div>
                                              <div>
-                                                 <div className="text-sm font-bold text-white">{player.name}</div>
+                                                 <div className="text-sm font-bold text-white group-hover:text-yellow-400 transition-colors uppercase">{player.name}</div>
                                                  <div className="text-[10px] text-gray-500">{player.matches} Partidas</div>
                                              </div>
                                          </div>
                                          <div className="text-right">
-                                             <div className="text-sm font-bold text-red-400">{player.kills} Kills</div>
-                                             <div className="text-[10px] text-gray-500">KD: {player.matches > 0 ? (player.kills / player.matches).toFixed(2) : '0.00'}</div>
-                                             <div className="text-[10px] text-purple-400 font-semibold">{percent}% da Equipe</div>
+                                             <div className="text-sm font-black text-red-500">{player.kills} Kills</div>
+                                             <div className="text-[10px] text-gray-500 font-mono">KD: {player.matches > 0 ? (player.kills / player.matches).toFixed(2) : '0.00'}</div>
+                                             <div className="text-[10px] text-yellow-500 font-bold">{percent}% da Equipe</div>
                                          </div>
                                      </div>
                                  )})}
@@ -307,29 +317,29 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
                 <div 
                     key={team.name} 
                     onClick={() => setFilters(prev => ({...prev, team: team.name}))}
-                    className="bg-[#2D2D2D] rounded-2xl p-6 border border-gray-700/50 shadow-lg hover:border-purple-500 hover:shadow-purple-500/20 transition-all cursor-pointer group relative overflow-hidden"
+                    className="bg-[#1a1a1a] rounded-2xl p-6 border border-gray-800 shadow-lg hover:border-yellow-500/50 hover:shadow-yellow-500/10 transition-all cursor-pointer group relative overflow-hidden"
                 >
                     <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowLeft className="rotate-180 text-purple-400" size={20} />
+                        <ArrowLeft className="rotate-180 text-yellow-500" size={20} />
                     </div>
 
                     <div className="flex flex-col items-center mb-6">
-                         <div className="w-20 h-20 bg-black/30 rounded-full flex items-center justify-center border border-gray-700 overflow-hidden mb-4 group-hover:scale-110 transition-transform duration-300">
+                         <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center border border-gray-800 overflow-hidden mb-4 group-hover:scale-110 group-hover:border-yellow-500 transition-all duration-300 p-1">
                             {team.image ? (
-                                <img src={team.image} alt={team.name} className="w-full h-full object-cover" />
+                                <img src={team.image} alt={team.name} className="w-full h-full object-contain" />
                             ) : (
-                                <Shield className="text-gray-500" size={32} />
+                                <Trophy className="text-gray-700" size={32} />
                             )}
                          </div>
-                         <h3 className="text-xl font-bold text-white text-center group-hover:text-purple-400 transition-colors">{team.name}</h3>
-                         <p className="text-xs text-gray-500 mt-1">{team.s} Partidas Jogadas</p>
+                         <h3 className="text-xl font-black italic text-white text-center group-hover:text-yellow-400 transition-colors uppercase">{team.name}</h3>
+                         <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider font-bold">{team.s} Jogos</p>
                     </div>
 
                     <div className="space-y-3">
-                        <StatRow label="Pontos Totais" value={team.pts} color="text-purple-400" />
-                        <StatRow label="Booyahs" value={team.b} color="text-yellow-500" />
-                        <StatRow label="Abates" value={team.abts} color="text-red-400" />
-                        <div className="border-t border-gray-700 my-2 pt-2 grid grid-cols-3 gap-1 text-center">
+                        <StatRow label="Pontos Totais" value={team.pts} color="text-yellow-500" />
+                        <StatRow label="Booyahs" value={team.b} color="text-orange-500" />
+                        <StatRow label="Abates" value={team.abts} color="text-red-500" />
+                        <div className="border-t border-gray-800 my-2 pt-2 grid grid-cols-3 gap-1 text-center">
                             <MiniStat label="Avg Pts" value={team.avgPts} />
                             <MiniStat label="Avg Kill" value={team.avgAbts} />
                             <MiniStat label="PTS/C" value={team.ptsc} />
@@ -346,26 +356,26 @@ const Teams: React.FC<TeamsProps> = ({ data }) => {
 // --- Helpers ---
 
 const Badge = ({ label, value, color, icon }: any) => (
-    <div className={`px-4 py-2 rounded-lg ${color} text-white shadow-lg flex items-center gap-2`}>
+    <div className={`px-4 py-2 rounded-lg ${color} text-white shadow-lg flex items-center gap-2 font-bold`}>
         {icon}
         <div>
-            <span className="block text-xs opacity-80 uppercase font-semibold">{label}</span>
-            <span className="block text-xl font-bold leading-none">{value}</span>
+            <span className="block text-[10px] opacity-80 uppercase tracking-wider">{label}</span>
+            <span className="block text-xl font-black leading-none">{value}</span>
         </div>
     </div>
 );
 
 const StatRow = ({ label, value, color }: any) => (
-    <div className="flex justify-between items-center bg-[#262626] p-2 rounded-lg">
-        <span className="text-xs text-gray-400 uppercase font-medium">{label}</span>
-        <span className={`text-lg font-bold ${color}`}>{value}</span>
+    <div className="flex justify-between items-center bg-[#0f0f0f] p-2 rounded-lg border border-gray-800">
+        <span className="text-xs text-gray-500 uppercase font-bold tracking-wide">{label}</span>
+        <span className={`text-lg font-black ${color}`}>{value}</span>
     </div>
 );
 
 const MiniStat = ({ label, value }: any) => (
     <div>
-        <div className="text-[9px] text-gray-500 uppercase">{label}</div>
-        <div className="text-sm font-bold text-gray-300">{value}</div>
+        <div className="text-[9px] text-gray-600 uppercase font-bold">{label}</div>
+        <div className="text-sm font-bold text-gray-300 font-mono">{value}</div>
     </div>
 );
 
