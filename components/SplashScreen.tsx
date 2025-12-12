@@ -1,17 +1,18 @@
-
 import React from 'react';
-import { Trophy, Flame } from 'lucide-react';
+import { Trophy, Flame, ChevronRight } from 'lucide-react';
 import { AppConfig } from '../types';
 
 interface SplashScreenProps {
   config?: AppConfig;
+  isLoading: boolean;
+  onEnter: () => void;
 }
 
-const SplashScreen: React.FC<SplashScreenProps> = ({ config }) => {
+const SplashScreen: React.FC<SplashScreenProps> = ({ config, isLoading, onEnter }) => {
   // Fallback if config is not yet loaded (though App handles this)
   const title1 = config?.titlePart1 || "MUNDIAL";
   const title2 = config?.titlePart2 || "2025";
-  const sub = config?.subtitle || "Dashboard Competitivo";
+  const sub = config?.subtitle || "Global Finals";
 
   return (
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] overflow-hidden">
@@ -32,7 +33,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ config }) => {
         </div>
 
         {/* Text */}
-        <h1 className="text-5xl md:text-7xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-gray-400 tracking-wider font-display mb-2 drop-shadow-lg uppercase">
+        <h1 className="text-5xl md:text-7xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-gray-400 tracking-wider font-display mb-2 drop-shadow-lg uppercase text-center px-4">
           {title1} {title2}
         </h1>
         <div className="flex items-center gap-3">
@@ -44,13 +45,35 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ config }) => {
         </div>
       </div>
 
-      {/* Loading Bar */}
-      <div className="relative z-10 mt-12 w-64 h-1 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
-        <div className="absolute top-0 left-0 h-full w-1/2 bg-yellow-500 shadow-[0_0_10px_#eab308] animate-[shimmer_1.5s_infinite_linear]"></div>
+      {/* Loading or Button */}
+      <div className="relative z-10 mt-12 h-20 flex flex-col items-center justify-center">
+        {isLoading ? (
+          <>
+            <div className="w-64 h-1 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
+              <div className="h-full w-1/2 bg-yellow-500 shadow-[0_0_10px_#eab308] animate-[shimmer_1.5s_infinite_linear]"></div>
+            </div>
+            <div className="mt-4 text-xs text-gray-500 font-mono animate-pulse">
+              CARREGANDO DADOS...
+            </div>
+          </>
+        ) : (
+          <button 
+            onClick={onEnter}
+            className="group relative px-8 py-4 bg-transparent overflow-hidden rounded-xl transition-all hover:scale-105 active:scale-95"
+          >
+            <div className="absolute inset-0 bg-yellow-500/20 blur-xl group-hover:bg-yellow-500/40 transition-all duration-500"></div>
+            <div className="relative bg-gradient-to-r from-yellow-600 to-yellow-500 p-[1px] rounded-xl">
+               <div className="bg-[#050505] rounded-xl px-8 py-3 flex items-center gap-3 group-hover:bg-[#0a0a0a] transition-colors">
+                  <span className="text-yellow-500 font-black tracking-[0.2em] uppercase text-sm group-hover:text-yellow-400">Entrar</span>
+                  <ChevronRight size={18} className="text-yellow-500 group-hover:translate-x-1 transition-transform" />
+               </div>
+            </div>
+          </button>
+        )}
       </div>
-      
-      <div className="mt-4 text-xs text-gray-500 font-mono animate-pulse">
-        CARREGANDO DADOS...
+
+      <div className="absolute bottom-12 text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em] opacity-80">
+         Desenvolvido por <span className="text-yellow-700">Jhan Medeiros</span>
       </div>
 
       <style>{`

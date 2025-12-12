@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Users, Shield, Skull, RefreshCw, Menu, X, Printer, Download, Trophy, Settings } from 'lucide-react';
@@ -201,6 +200,9 @@ const Layout: React.FC<LayoutProps> = ({ children, onRefresh, loading, lastUpdat
                 <span>Dúvida Zero</span>
                 <span>•</span>
                 <span>Brilho Máximo</span>
+            </div>
+            <div className="mt-1 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
+                Desenvolvido por <span className="text-yellow-600">Jhan Medeiros</span>
             </div>
         </div>
       </footer>

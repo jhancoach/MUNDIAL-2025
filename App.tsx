@@ -46,20 +46,20 @@ const App: React.FC = () => {
     // Update data immediately
     setData(newData);
     
-    // Hide splash screen with a small buffer for smooth transition if it's showing
-    if (showSplash) {
-        setTimeout(() => {
-            setShowSplash(false);
-        }, 800); 
-    }
-  }, [showSplash]);
+    // Note: We no longer auto-hide the splash screen here.
+    // The user must click the "Enter" button in the SplashScreen component.
+  }, []);
 
   useEffect(() => {
     loadData();
   }, []); // Run once on mount
 
   if (showSplash) {
-      return <SplashScreen config={config} />;
+      return <SplashScreen 
+                config={config} 
+                isLoading={data.loading} 
+                onEnter={() => setShowSplash(false)} 
+             />;
   }
 
   return (
